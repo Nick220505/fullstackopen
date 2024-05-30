@@ -44,9 +44,12 @@ const App = () => {
     }
     personService
       .create(newPerson)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson))
         showNotification(`Added ${newPerson.name}`, 'success')
+      })
+      .catch(error => {
+        showNotification(error.response.data.error, 'error')
       })
   }
 
