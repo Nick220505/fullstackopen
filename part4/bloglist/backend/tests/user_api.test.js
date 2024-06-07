@@ -18,6 +18,26 @@ describe('when there is initially one user in db', () => {
     }).save()
   })
 
+  test('valid user is created and the status code is 201', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    await api
+      .post('/api/users')
+      .send({
+        username: 'Harry',
+        password: '456',
+        name: 'Harry Potter'
+      })
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    assert(usernames.includes('Harry'))
+  })
+
   describe('invalid users are not created and the status code is 400', () => {
     test('if the provided user does not contain a username', async () => {
       const usersAtStart = await helper.usersInDb()
