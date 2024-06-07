@@ -1,26 +1,56 @@
 const { describe, beforeEach, test, after } = require('node:test')
 const assert = require('node:assert')
 const supertest = require('supertest')
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const api = supertest(app)
 
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
+    await User.deleteMany({})
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+    let user = new User({
+      username: 'Nick220505',
+      passwordHash: await bcrypt.hash('123', 10),
+      name: 'Nicolas Pardo'
+    })
+    await user.save()
+    await Promise.all(helper.initialBlogs.map(blog => {
+      blog.user = user._id
+      return new Blog(blog).save()
+    }))
+    const blogs = await Blog.find({})
+    for (const blog of blogs) {
+      user = await User.findOne({ username: 'Nick220505' })
+      user.blogs = user.blogs.concat(blog._id)
+      await user.save()
+    }
   })
 
-  test.only('blogs are returned as JSON', async () => {
+  const getToken = async () => {
+    const response = await api
+      .post('/api/login')
+      .send({
+        username: 'Nick220505',
+        password: '123'
+      })
+
+    const { token } = response.body
+    return token
+  }
+
+  test('blogs are returned as JSON', async () => {
     await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
-  test.only('unique identifier property of blog posts is named id', async () => {
+  test('unique identifier property of blog posts is named id', async () => {
     const response = await api.get('/api/blogs')
     response.body.forEach(blog => assert(Object.keys(blog).includes('id')))
   })
@@ -33,8 +63,10 @@ describe('when there is initially some blogs saved', () => {
         url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html',
         likes: 10,
       }
+
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${await getToken()}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -52,8 +84,10 @@ describe('when there is initially some blogs saved', () => {
         author: 'Robert C. Martin',
         url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html'
       }
+
       const response = await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${await getToken()}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -72,6 +106,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${await getToken()}`)
         .send(newBlog)
         .expect(400)
 
@@ -88,6 +123,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${await getToken()}`)
         .send(newBlog)
         .expect(400)
 
@@ -125,6 +161,7 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', `Bearer ${await getToken()}`)
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
