@@ -8,9 +8,11 @@ const Blogs = ({ user, blogs, handleLogout }) => {
         {user} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <div>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </div>
     </>
   )
 }
