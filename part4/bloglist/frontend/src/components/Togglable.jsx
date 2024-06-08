@@ -1,9 +1,13 @@
+import React from 'react'
 import { useState, forwardRef, useImperativeHandle } from 'react'
 
-const Togglable = forwardRef(({ children, buttonLabel }, ref) => {
-  const [visible, setVisible] = useState(false)
+const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabelSecondComponent }, ref) => {
+  const childrenArray = React.Children.toArray(children)
+  const [shownComponentIndex, setShownComponentIndex] = useState(0)
 
-  const toggleVisibility = () => setVisible(!visible)
+  const toggleVisibility = () => {
+    setShownComponentIndex(shownComponentIndex === 0 ? 1 : 0)
+  }
 
   useImperativeHandle(ref, () => {
     return {
@@ -13,9 +17,9 @@ const Togglable = forwardRef(({ children, buttonLabel }, ref) => {
 
   return (
     <div>
-      {visible && children}
+      {childrenArray[shownComponentIndex]}
       <button onClick={toggleVisibility}>
-        {visible ? 'cancel': buttonLabel}
+        {shownComponentIndex === 0 ? buttonLabelFirstComponent: buttonLabelSecondComponent}
       </button>
     </div>
   )

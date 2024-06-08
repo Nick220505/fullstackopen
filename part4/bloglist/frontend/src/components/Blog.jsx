@@ -1,7 +1,11 @@
-const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>  
-)
+import Togglable from "./Togglable"
+
+const Blog = ({ blog }) => {
+  return (
+    <div>
+      {blog.title} {blog.author}
+    </div>  
+  )
+}
 
 export default Blog
