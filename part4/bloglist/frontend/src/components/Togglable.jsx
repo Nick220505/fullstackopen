@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, forwardRef, useImperativeHandle } from 'react'
 
-const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabelSecondComponent }, ref) => {
+const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabelSecondComponent, style }, ref) => {
   const childrenArray = React.Children.toArray(children)
   const [shownComponentIndex, setShownComponentIndex] = useState(0)
 
@@ -16,7 +16,7 @@ const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabel
   })
 
   return (
-    <div>
+    <div style={style}>
       {childrenArray[shownComponentIndex]}
       <button onClick={toggleVisibility}>
         {shownComponentIndex === 0 ? buttonLabelFirstComponent: buttonLabelSecondComponent}

@@ -79,8 +79,9 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable
-        buttonLabelFirstComponent="new blog"
+        buttonLabelFirstComponent="create new blog"
         buttonLabelSecondComponent="cancel"
+        style={{ marginBottom: '5px' }}
         ref={togglableRef}>
         <></>
         <BlogForm addBlog={addBlog} />
