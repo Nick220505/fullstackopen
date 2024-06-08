@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import Blogs from './components/Blogs'
 import BlogForm from './components/BlogForm'
 import loginService from './services/login'
@@ -8,15 +9,9 @@ import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
   const [message, setMessage] = useState(null)
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const togglableRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -28,17 +23,13 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async event => {
-    event.preventDefault()
-
+  const login = async object => {
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(object)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setMessage({
         text: 'wrong username or password',
@@ -54,20 +45,16 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async event => {
-    event.preventDefault()
-
+  const addBlog = async newObject => {
     try {
-      const newBlog = await blogService.create({ title, author, url })
+      const newBlog = await blogService.create(newObject)
       setBlogs(blogs.concat(newBlog))
+      togglableRef.current.toggleVisibility()
       setMessage({
         text: `a new blog ${newBlog.title} by ${newBlog.author} added`,
         type: 'success'
       })
       setTimeout(() => { setMessage(null) }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     } catch (exception) {
       setMessage({ text: 'Error creating blog', type: 'error' })
       setTimeout(() => { setMessage(null) }, 5000)
@@ -78,13 +65,7 @@ const App = () => {
     return (
       <div>
         {message && <Notification message={message} />}
-        <LoginForm
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        />
+        <LoginForm login={login} />
       </div>
     )
   }
@@ -97,16 +78,10 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
+      <Togglable buttonLabel="new blog" ref={togglableRef}>
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
       <Blogs blogs={blogs} />
-      <BlogForm
-        title={title}
-        setTitle={setTitle}
-        author={author}
-        setAuthor={setAuthor}
-        url={url}
-        setUrl={setUrl}
-        addBlog={addBlog}
-      />
     </div>
   )
 }

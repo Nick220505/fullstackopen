@@ -1,30 +1,46 @@
-const BlogForm = ({ title, setTitle, author, setAuthor, url, setUrl, addBlog }) => {
+import { useState } from 'react'
+
+const BlogForm = ({ addBlog }, ref) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+    await addBlog({ title, author, url })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+  }
+  
   return (  
-    <form onSubmit={addBlog}>
+    <div>
       <h2>create new</h2>
-      title:
-      <input
-        type="text"
-        value={title}
-        onChange={({ target }) => setTitle(target.value)}
-      />
-      <br/>
-      author:
-      <input
-        type="text"
-        value={author}
-        onChange={({ target }) => setAuthor(target.value)}
-      />
-      <br/>
-      url:
-      <input
-        type="text"
-        value={url}
-        onChange={({ target }) => setUrl(target.value)}
-      />
-      <br/>
-      <button type="submit">create</button>
-    </form>
+      <form onSubmit={handleSubmit}>
+        title:
+        <input
+          type="text"
+          value={title}
+          onChange={({ target }) => setTitle(target.value)}
+        />
+        <br/>
+        author:
+        <input
+          type="text"
+          value={author}
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+        <br/>
+        url:
+        <input
+          type="text"
+          value={url}
+          onChange={({ target }) => setUrl(target.value)}
+        />
+        <br/>
+        <button type="submit">create</button>
+      </form>
+    </div>
   )
 }
 
