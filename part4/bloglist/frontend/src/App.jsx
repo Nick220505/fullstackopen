@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
 import Blogs from './components/Blogs'
 import BlogForm from './components/BlogForm'
 import loginService from './services/login'
@@ -10,6 +11,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const [message, setMessage] = useState(null)
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -37,7 +40,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('wrong credentials')
+      setMessage({
+        text: 'wrong username or password',
+        type: 'error'
+      })
+      setTimeout(() => { setMessage(null) }, 5000)
     }
   }
 
@@ -50,40 +57,56 @@ const App = () => {
   const addBlog = async event => {
     event.preventDefault()
 
-    const newBlog = await blogService.create({ title, author, url })
-    setBlogs(blogs.concat(newBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    try {
+      const newBlog = await blogService.create({ title, author, url })
+      setBlogs(blogs.concat(newBlog))
+      setMessage({
+        text: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+        type: 'success'
+      })
+      setTimeout(() => { setMessage(null) }, 5000)
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (exception) {
+      setMessage({ text: 'Error creating blog', type: 'error' })
+      setTimeout(() => { setMessage(null) }, 5000)
+    }
+  }
+
+  if (!user) {
+    return (
+      <div>
+        {message && <Notification message={message} />}
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />
+      </div>
+    )
   }
 
   return (
     <div>
-      {user
-        ? <>
-          <Blogs
-            user={user.name}
-            blogs={blogs}
-            handleLogout={handleLogout}
-          />
-          <BlogForm
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-            addBlog={addBlog}
-          />
-        </>
-        : <LoginForm
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />
-      }
+      <h2>blogs</h2>
+      {message && <Notification message={message} />}
+      <p>
+        {user.name} logged in
+        <button onClick={handleLogout}>logout</button>
+      </p>
+      <Blogs blogs={blogs} />
+      <BlogForm
+        title={title}
+        setTitle={setTitle}
+        author={author}
+        setAuthor={setAuthor}
+        url={url}
+        setUrl={setUrl}
+        addBlog={addBlog}
+      />
     </div>
   )
 }
