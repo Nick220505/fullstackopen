@@ -23,9 +23,9 @@ const App = () => {
     }
   }, [])
 
-  const login = async object => {
+  const login = async credentials => {
     try {
-      const user = await loginService.login(object)
+      const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       
       blogService.setToken(user.token)
@@ -45,9 +45,9 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async newObject => {
+  const addBlog = async blog => {
     try {
-      const newBlog = await blogService.create(newObject)
+      const newBlog = await blogService.create(blog)
       setBlogs(blogs.concat(newBlog))
       togglableRef.current.toggleVisibility()
       setMessage({
@@ -57,6 +57,26 @@ const App = () => {
       setTimeout(() => { setMessage(null) }, 5000)
     } catch (exception) {
       setMessage({ text: 'Error creating blog', type: 'error' })
+      setTimeout(() => { setMessage(null) }, 5000)
+    }
+  }
+
+  const updateBlog = async blog => {
+    try {
+      const updatedBlog = await blogService.update(blog)
+      setBlogs(blogs.map(blog => {
+        if (blog.id === updatedBlog.id) {
+          blog = updatedBlog
+        }
+        return blog
+      }))
+      setMessage({
+        text: `blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
+        type: 'success'
+      })
+      setTimeout(() => { setMessage(null) }, 5000)
+    } catch (exception) {
+      setMessage({ text: 'Error updating blog', type: 'error' })
       setTimeout(() => { setMessage(null) }, 5000)
     }
   }
@@ -86,7 +106,7 @@ const App = () => {
         <></>
         <BlogForm addBlog={addBlog} />
       </Togglable>
-      <Blogs blogs={blogs} />
+      <Blogs blogs={blogs} updateBlog={updateBlog} />
     </div>
   )
 }

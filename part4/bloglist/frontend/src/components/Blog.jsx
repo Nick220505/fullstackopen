@@ -1,12 +1,24 @@
 import Togglable from "./Togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
+
+  const { id, title, author, url, likes } = blog
 
   const blogStyle = {
     border: '2px solid black',
     padding: '5px',
     marginBottom: '5px',
     display: 'flex'
+  }
+
+  const update = async () => {
+    await updateBlog({
+      id,
+      likes: likes + 1,
+      author,
+      title,
+      url
+    })
   }
 
   return (
@@ -16,17 +28,19 @@ const Blog = ({ blog }) => {
       style={blogStyle}
     >
       <div>
-        {blog.title}
+        {title}
       </div>
       <div>
-        {blog.title}
+        {title}
         <br/>
-        {blog.url}
+        {url}
         <br/>
-        likes {blog.likes}
-        <button>like</button>
+        likes {likes}
+        <button onClick={update}>
+          like
+        </button>
         <br/>
-        {blog.author}
+        {author}
       </div>
     </Togglable>
   )

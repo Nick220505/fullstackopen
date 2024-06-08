@@ -17,12 +17,15 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
     request.body,
     { new: true }
   )
+  const user = request.user
+  user.blogs = user.blogs.concat(updatedBlog._id)
+  await user.save()
   response.json(updatedBlog)
 })
 
