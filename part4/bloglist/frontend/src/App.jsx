@@ -36,12 +36,18 @@ const App = () => {
     }
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
+  }
+
   return (
     <div>
       {user
         ? <Blogs
             user={user.name}
             blogs={blogs}
+            handleLogout={handleLogout}
           />
         : <LoginForm
             username={username}
