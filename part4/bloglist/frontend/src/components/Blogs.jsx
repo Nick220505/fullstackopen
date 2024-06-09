@@ -1,6 +1,6 @@
 import Blog from './Blog'
 
-const Blogs = ({ blogs, updateBlog }) => {
+const Blogs = ({ blogs, updateBlog, removeBlog, user }) => {
   return (  
     <div>
       {blogs.map(blog =>
@@ -8,6 +8,8 @@ const Blogs = ({ blogs, updateBlog }) => {
           key={blog.id}
           blog={blog}
           updateBlog={updateBlog}
+          removeBlog={removeBlog}
+          user={user}
         />
       )}
     </div>

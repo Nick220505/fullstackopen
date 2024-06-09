@@ -1,6 +1,20 @@
+import { useState, useEffect } from 'react'
 import Togglable from "./Togglable"
+import userService from '../services/users'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
+
+  const [blogAddedByUser, setBlogAddedByUser] = useState(false)
+
+  useEffect(() => {
+    userService
+      .getUser(user.username)
+      .then(user => {
+        if (user.blogs.find(b => b.id === blog.id)) {
+          setBlogAddedByUser(true)
+        }
+      })
+  }, [])
 
   const { id, title, author, url, likes } = blog
 
@@ -20,6 +34,11 @@ const Blog = ({ blog, updateBlog }) => {
       url
     })
   }
+
+  const remove = async () => {
+    await removeBlog({ id, title, author })
+  }
+
 
   return (
     <Togglable
@@ -41,6 +60,12 @@ const Blog = ({ blog, updateBlog }) => {
         </button>
         <br/>
         {author}
+        <br/>
+        {blogAddedByUser && (
+          <button onClick={remove}>
+            remove
+          </button>
+        )}
       </div>
     </Togglable>
   )

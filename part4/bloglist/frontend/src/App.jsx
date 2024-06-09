@@ -13,13 +13,17 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const togglableRef = useRef()
 
+  const sortBlogs = blogs => {
+    return blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
+  }
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-      blogService.getAll().then(blogs => setBlogs(blogs))
+      blogService.getAll().then(blogs => setBlogs(sortBlogs(blogs)))
     }
   }, [])
 
@@ -48,7 +52,7 @@ const App = () => {
   const addBlog = async blog => {
     try {
       const newBlog = await blogService.create(blog)
-      setBlogs(blogs.concat(newBlog))
+      setBlogs(sortBlogs(blogs.concat(newBlog)))
       togglableRef.current.toggleVisibility()
       setMessage({
         text: `a new blog ${newBlog.title} by ${newBlog.author} added`,
@@ -64,12 +68,12 @@ const App = () => {
   const updateBlog = async blog => {
     try {
       const updatedBlog = await blogService.update(blog)
-      setBlogs(blogs.map(blog => {
+      setBlogs(sortBlogs(blogs.map(blog => {
         if (blog.id === updatedBlog.id) {
           blog = updatedBlog
         }
         return blog
-      }))
+      })))
       setMessage({
         text: `blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
         type: 'success'
@@ -77,6 +81,23 @@ const App = () => {
       setTimeout(() => { setMessage(null) }, 5000)
     } catch (exception) {
       setMessage({ text: 'Error updating blog', type: 'error' })
+      setTimeout(() => { setMessage(null) }, 5000)
+    }
+  }
+
+  const removeBlog = async blog => {
+    try {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        await blogService.remove(blog.id)
+        setBlogs(sortBlogs(blogs.filter(b => b.id !== blog.id)))
+        setMessage({
+          text: `blog ${blog.title} by ${blog.author} has been removed`,
+          type: 'success'
+        })
+        setTimeout(() => { setMessage(null) }, 5000);
+      }
+    } catch (exception) {
+      setMessage({ text: 'Error removing blog', type: 'error' })
       setTimeout(() => { setMessage(null) }, 5000)
     }
   }
@@ -106,7 +127,12 @@ const App = () => {
         <></>
         <BlogForm addBlog={addBlog} />
       </Togglable>
-      <Blogs blogs={blogs} updateBlog={updateBlog} />
+      <Blogs
+        blogs={blogs}
+        updateBlog={updateBlog}
+        removeBlog={removeBlog}
+        user={user}
+      />
     </div>
   )
 }
