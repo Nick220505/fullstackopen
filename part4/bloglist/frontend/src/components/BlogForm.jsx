@@ -12,8 +12,8 @@ const BlogForm = ({ addBlog }, ref) => {
     setAuthor('')
     setUrl('')
   }
-  
-  return (  
+
+  return (
     <div>
       <h2>create new</h2>
       <form onSubmit={handleSubmit}>

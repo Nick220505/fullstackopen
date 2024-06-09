@@ -1,7 +1,7 @@
 import Blog from './Blog'
 
 const Blogs = ({ blogs, updateBlog, removeBlog, user }) => {
-  return (  
+  return (
     <div>
       {blogs.map(blog =>
         <Blog

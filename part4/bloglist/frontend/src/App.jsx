@@ -31,7 +31,7 @@ const App = () => {
     try {
       const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      
+
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
@@ -94,7 +94,7 @@ const App = () => {
           text: `blog ${blog.title} by ${blog.author} has been removed`,
           type: 'success'
         })
-        setTimeout(() => { setMessage(null) }, 5000);
+        setTimeout(() => { setMessage(null) }, 5000)
       }
     } catch (exception) {
       setMessage({ text: 'Error removing blog', type: 'error' })

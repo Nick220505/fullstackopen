@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Togglable from "./Togglable"
+import Togglable from './Togglable'
 import userService from '../services/users'
 
 const Blog = ({ blog, updateBlog, removeBlog, user }) => {
@@ -14,7 +14,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
           setBlogAddedByUser(true)
         }
       })
-  }, [])
+  }, [blog.id, user.username])
 
   const { id, title, author, url, likes } = blog
 
