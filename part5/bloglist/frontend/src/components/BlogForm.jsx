@@ -19,6 +19,7 @@ const BlogForm = ({ addBlog }, ref) => {
       <form onSubmit={handleSubmit}>
         title:
         <input
+          data-testid="title"
           type="text"
           name="Title"
           id="title"
@@ -28,6 +29,7 @@ const BlogForm = ({ addBlog }, ref) => {
         <br/>
         author:
         <input
+          data-testid="author"
           type="text"
           name="Author"
           id="author"
@@ -37,6 +39,7 @@ const BlogForm = ({ addBlog }, ref) => {
         <br/>
         url:
         <input
+          data-testid="url"
           type="text"
           name="Url"
           id="url"

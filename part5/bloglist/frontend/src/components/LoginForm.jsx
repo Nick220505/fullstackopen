@@ -15,6 +15,7 @@ const LoginForm = ({ login }) => {
       <form onSubmit={handleLogin}>
         username
         <input
+          data-testid="username"
           type="text"
           name="Username"
           value={username}
@@ -23,6 +24,7 @@ const LoginForm = ({ login }) => {
         <br/>
         password
         <input
+          data-testid="password"
           type="password"
           name="Password"
           value={password}
