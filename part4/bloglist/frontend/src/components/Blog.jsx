@@ -10,6 +10,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     userService
       .getUser(user.username)
       .then(user => {
+        console.log(user)
         if (user.blogs.find(b => b.id === blog.id)) {
           setBlogAddedByUser(true)
         }
@@ -44,25 +45,26 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     <Togglable
       buttonLabelFirstComponent="view"
       buttonLabelSecondComponent="hide"
+      className="blog-content"
       style={blogStyle}
     >
       <div>
-        {title}
+        <span className="blog-title">{title}</span>
       </div>
       <div>
-        {title}
+        <span className="blog-title">{title}</span>
         <br/>
-        {url}
+        <span className="blog-url">{url}</span>
         <br/>
-        likes {likes}
-        <button onClick={update}>
+        <span className="blog-likes">likes {likes}</span>
+        <button className="like-button" onClick={update}>
           like
         </button>
         <br/>
-        {author}
+        <span className="blog-author">{author}</span>
         <br/>
         {blogAddedByUser && (
-          <button onClick={remove}>
+          <button className="remove-button" onClick={remove}>
             remove
           </button>
         )}

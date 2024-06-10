@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 
-const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabelSecondComponent, style }, ref) => {
+const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabelSecondComponent, className, style }, ref) => {
   const childrenArray = React.Children.toArray(children)
   const [shownComponentIndex, setShownComponentIndex] = useState(0)
 
@@ -16,11 +16,13 @@ const Togglable = forwardRef(({ children, buttonLabelFirstComponent, buttonLabel
     }
   })
 
+  const buttonText = shownComponentIndex === 0 ? buttonLabelFirstComponent: buttonLabelSecondComponent
+
   return (
-    <div style={style}>
+    <div className={className} style={style}>
       {childrenArray[shownComponentIndex]}
-      <button onClick={toggleVisibility}>
-        {shownComponentIndex === 0 ? buttonLabelFirstComponent: buttonLabelSecondComponent}
+      <button className={`${buttonText}-button`} onClick={toggleVisibility}>
+        {buttonText}
       </button>
     </div>
   )
