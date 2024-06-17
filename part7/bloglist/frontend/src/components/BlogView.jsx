@@ -4,6 +4,7 @@ import { useNotificationDispatch } from '../contexts/NotificationContext'
 import { useUserValue } from '../contexts/UserContext'
 import userService from '../services/users'
 import blogService from '../services/blogs'
+import Comments from './Comments'
 
 const BlogView = () => {
   const { id } = useParams()
@@ -107,6 +108,7 @@ const BlogView = () => {
           remove
         </button>
       )}
+      <Comments blog={blog} />
     </div>
   )
 }
