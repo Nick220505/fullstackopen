@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, forwardRef, useImperativeHandle } from 'react'
+import Button from '@mui/material/Button'
 import PropTypes from 'prop-types'
 
 const Togglable = forwardRef(
@@ -34,9 +35,14 @@ const Togglable = forwardRef(
     return (
       <div className={className} style={style}>
         {childrenArray[shownComponentIndex]}
-        <button className={`${buttonText}-button`} onClick={toggleVisibility}>
+        <Button
+          className={`${buttonText}-button`}
+          onClick={toggleVisibility}
+          variant="contained"
+          sx={{ marginTop: 2, marginBottom: 2 }}
+        >
           {buttonText}
-        </button>
+        </Button>
       </div>
     )
   },

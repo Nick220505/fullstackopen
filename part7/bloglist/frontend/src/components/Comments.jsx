@@ -1,6 +1,15 @@
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import blogService from '../services/blogs'
+import {
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from '@mui/material'
 
 const Comments = ({ blog }) => {
   const [newComment, setNewComment] = useState('')
@@ -24,21 +33,46 @@ const Comments = ({ blog }) => {
 
   return (
     <div>
-      <h2>comments</h2>
+      <Typography gutterBottom variant="h6" component="div">
+        comments
+      </Typography>
       <form onSubmit={updateBlog}>
-        <input
+        <TextField
           type="text"
-          name="newComment"
+          data-testid="new-comment"
+          name="NewComment"
+          label="New Comment"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
+          margin="normal"
+          fullWidth
+          multiline
+          rows={4}
         />
-        <button type="submit">add comment</button>
+        <Button variant="contained" type="submit">
+          add comment
+        </Button>
       </form>
-      <ul>
-        {blog.comments.map((comment) => (
-          <li key={comment}>{comment}</li>
+      <br />
+      <List
+        sx={{
+          py: 0,
+          width: '100%',
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          backgroundColor: 'background.paper',
+        }}
+      >
+        {blog.comments.map((comment, index) => (
+          <Fragment key={index}>
+            <Divider component="li" />
+            <ListItem>
+              <ListItemText>{comment}</ListItemText>
+            </ListItem>
+          </Fragment>
         ))}
-      </ul>
+      </List>
     </div>
   )
 }

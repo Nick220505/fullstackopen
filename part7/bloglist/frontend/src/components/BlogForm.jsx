@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useNotificationDispatch } from '../contexts/NotificationContext'
 import blogService from '../services/blogs'
+import { Button, Typography, TextField } from '@mui/material'
 
 const BlogForm = () => {
   const notificationDispatch = useNotificationDispatch()
@@ -37,41 +38,48 @@ const BlogForm = () => {
 
   return (
     <div>
-      <h2>create new</h2>
+      <Typography gutterBottom variant="h5" component="div">
+        Create new
+      </Typography>
       <form onSubmit={handleSubmit}>
-        title:
-        <input
+        <TextField
+          type="text"
           data-testid="title"
-          type="text"
           name="Title"
-          id="title"
+          label="Title"
           value={title}
-          onChange={({ target }) => setTitle(target.value)}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          margin="normal"
+          fullWidth
         />
-        <br />
-        author:
-        <input
+        <TextField
+          type="text"
           data-testid="author"
-          type="text"
           name="Author"
-          id="author"
+          label="Author"
           value={author}
-          onChange={({ target }) => setAuthor(target.value)}
+          onChange={(e) => setAuthor(e.target.value)}
+          required
+          margin="normal"
+          fullWidth
         />
-        <br />
-        url:
-        <input
-          data-testid="url"
+        <TextField
           type="text"
+          data-testid="url"
           name="Url"
-          id="url"
+          label="Url"
           value={url}
-          onChange={({ target }) => setUrl(target.value)}
+          onChange={(e) => setUrl(e.target.value)}
+          required
+          margin="normal"
+          fullWidth
         />
         <br />
-        <button id="create-blog" type="submit">
+        <br />
+        <Button id="create-blog" type="submit" variant="contained">
           create
-        </button>
+        </Button>
       </form>
     </div>
   )

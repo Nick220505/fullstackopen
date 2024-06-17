@@ -5,6 +5,14 @@ import { useUserValue } from '../contexts/UserContext'
 import userService from '../services/users'
 import blogService from '../services/blogs'
 import Comments from './Comments'
+import {
+  Container,
+  Typography,
+  Link,
+  Button,
+  Box,
+  CircularProgress,
+} from '@mui/material'
 
 const BlogView = () => {
   const { id } = useParams()
@@ -66,16 +74,20 @@ const BlogView = () => {
   })
 
   if (isLoading) {
-    return <div>Loading blog...</div>
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   if (isError) {
     return (
-      <div>
+      <Typography gutterBottom variant="h5" component="div">
         {error.response.status === 404
           ? 'Blog not found'
           : 'Error loading blog.'}
-      </div>
+      </Typography>
     )
   }
 
@@ -93,23 +105,29 @@ const BlogView = () => {
   const blogAddedByUser = user?.blogs.find((b) => b.id === blog.id)
 
   return (
-    <div>
-      <h2>{title}</h2>
-      <a href={url}>{url}</a>
-      <div>
+    <Container>
+      <Typography gutterBottom variant="h5" component="div">
+        {title}
+      </Typography>
+      <Link href={url} underline="always">
+        {url}
+      </Link>
+      <Typography gutterBottom variant="h6" component="div">
         {likes} likes
-        <button className="like-button" onClick={update}>
-          like
-        </button>
-      </div>
-      <div>added by {blogUser.name}</div>
+      </Typography>
+      <Button className="like-button" variant="outlined" onClick={update}>
+        like
+      </Button>
+      <Typography gutterBottom variant="h6" component="div">
+        added by {blogUser.name}
+      </Typography>
       {blogAddedByUser && (
-        <button className="remove-button" onClick={remove}>
+        <Button className="remove-button" variant="outlined" onClick={remove}>
           remove
-        </button>
+        </Button>
       )}
       <Comments blog={blog} />
-    </div>
+    </Container>
   )
 }
 

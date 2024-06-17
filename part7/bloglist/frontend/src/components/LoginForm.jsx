@@ -3,6 +3,16 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { useUserDispatch } from '../contexts/UserContext'
 import { useNotificationDispatch } from '../contexts/NotificationContext'
+import {
+  Container,
+  Card,
+  CardContent,
+  FormControl,
+  Typography,
+  Button,
+  TextField,
+  Box,
+} from '@mui/material'
 
 const LoginForm = () => {
   const userDispatch = useUserDispatch()
@@ -31,30 +41,56 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
-      <h1>log in to application</h1>
-      <form onSubmit={handleLogin}>
-        username
-        <input
-          data-testid="username"
-          type="text"
-          name="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
-        password
-        <input
-          data-testid="password"
-          type="password"
-          name="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <button type="submit">login</button>
-      </form>
-    </div>
+    <Container
+      maxWidth="sm"
+      sx={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
+      <Card>
+        <CardContent sx={{ margin: 5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography gutterBottom variant="h4" component="div">
+              Log in to application
+            </Typography>
+          </Box>
+          <form onSubmit={handleLogin}>
+            <TextField
+              type="text"
+              data-testid="username"
+              name="Username"
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              margin="normal"
+              fullWidth
+            />
+            <TextField
+              type="password"
+              data-testid="password"
+              name="Password"
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              margin="normal"
+              fullWidth
+            />
+            <br />
+            <br />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button type="submit" variant="contained" size="large">
+                Login
+              </Button>
+            </Box>
+          </form>
+        </CardContent>
+      </Card>
+    </Container>
   )
 }
 

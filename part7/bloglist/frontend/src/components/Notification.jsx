@@ -1,4 +1,5 @@
 import { useNotificationValue } from '../contexts/NotificationContext'
+import { Alert, Box } from '@mui/material'
 
 const Notification = () => {
   const { message, type } = useNotificationValue()
@@ -10,19 +11,9 @@ const Notification = () => {
   const successMessage = type === 'success'
 
   return (
-    <div
-      className="notification"
-      style={{
-        backgroundColor: 'lightgray',
-        color: successMessage ? 'green' : 'red',
-        fontSize: '25px',
-        border: `3px solid ${successMessage ? 'green' : 'red'}`,
-        borderRadius: '5px',
-        padding: '10px',
-      }}
-    >
-      {message}
-    </div>
+    <Box sx={{ margin: 3 }}>
+      <Alert severity={successMessage ? 'success' : 'error'}>{message}</Alert>
+    </Box>
   )
 }
 
