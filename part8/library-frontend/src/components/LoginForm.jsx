@@ -3,12 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 
-const LoginForm = ({ token, setToken }) => {
+const LoginForm = ({ setToken }) => {
   const navigate = useNavigate()
-
-  if (token) {
-    navigate('/')
-  }
 
   const [username, setUsername] = useState('Nick220505')
   const [password, setPassword] = useState('secret')
@@ -21,8 +17,9 @@ const LoginForm = ({ token, setToken }) => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('library-token', token)
+      navigate('/')
     }
-  }, [result.data, setToken])
+  }, [result.data, setToken, navigate])
 
   const handleSubmit = (event) => {
     event.preventDefault()

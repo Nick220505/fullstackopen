@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
 import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 
 const NewBook = () => {
+  const navigate = useNavigate()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -16,15 +19,15 @@ const NewBook = () => {
   const submit = async (event) => {
     event.preventDefault()
 
-    addBook({
-      variables: { title, author, published: Number(published), genres },
-    })
-
     setTitle('')
     setPublished('')
     setAuthor('')
     setGenres([])
     setGenre('')
+
+    addBook({
+      variables: { title, author, published: Number(published), genres },
+    }).then(() => navigate('/'))
   }
 
   const addGenre = () => {
