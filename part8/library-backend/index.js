@@ -1,6 +1,17 @@
+require('dotenv').config()
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
+const mongoose = require('mongoose')
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('Connecting to', MONGODB_URI)
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.log('Error connecting to MongoDB:', error))
 
 let authors = [
   {
@@ -92,7 +103,7 @@ const typeDefs = `
     id: ID!
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     genres: [String!]!
   }
 
@@ -178,7 +189,7 @@ const server = new ApolloServer({
 })
 
 startStandaloneServer(server, {
-  listen: { port: 4000 },
+  listen: { port: process.env.PORT },
 }).then(({ url }) => {
-  console.log(`Server ready at ${url}`)
+  console.log('Server ready at', url)
 })
