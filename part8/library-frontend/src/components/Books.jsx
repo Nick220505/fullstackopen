@@ -1,18 +1,32 @@
 import { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
-import { distinctGenres, filterBooks } from '../utils/bookUtils'
+import { ALL_BOOKS_AND_GENRES, FILTER_GENRE } from '../queries'
 import BookTable from './BookTable'
 
 const Books = () => {
   const [books, setBooks] = useState([])
-  const { data, loading } = useQuery(ALL_BOOKS)
+  const [genre, setGenre] = useState(null)
+  const [genres, setGenres] = useState([])
+
+  const { data, loading } = useQuery(ALL_BOOKS_AND_GENRES)
 
   useEffect(() => {
     if (data) {
       setBooks(data.allBooks)
+      setGenres(data.allGenres)
     }
   }, [data])
+
+  const { data: filteredData } = useQuery(FILTER_GENRE, {
+    variables: { genre },
+    skip: !genre,
+  })
+
+  useEffect(() => {
+    if (filteredData) {
+      setBooks(filteredData.allBooks)
+    }
+  }, [filteredData])
 
   if (loading) {
     return <div>Loading...</div>
@@ -23,16 +37,18 @@ const Books = () => {
       <h2>books</h2>
 
       <BookTable books={books} />
-      {distinctGenres(data.allBooks).map((genre) => (
-        <button
-          key={genre}
-          onClick={() => setBooks(filterBooks(data.allBooks, genre))}
-        >
+      {genres.map((genre) => (
+        <button key={genre} onClick={() => setGenre(genre)}>
           {genre}
         </button>
       ))}
-      {distinctGenres(data.allBooks).length > 0 && (
-        <button onClick={() => setBooks(filterBooks(data.allBooks))}>
+      {data.allBooks.length > 0 && (
+        <button
+          onClick={() => {
+            setBooks(data.allBooks)
+            setGenre(null)
+          }}
+        >
           all genres
         </button>
       )}

@@ -1,16 +1,35 @@
+import { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
-import { distinctGenres, filterBooks } from '../utils/bookUtils'
+import { ALL_BOOKS_AND_GENRES, FILTER_GENRE } from '../queries'
 import BookTable from './BookTable'
 
 const Recommendations = () => {
-  const { data, loading } = useQuery(ALL_BOOKS)
+  const [books, setBooks] = useState([])
+  const [favoriteGenre, setFavoriteGenre] = useState(null)
+
+  const { data, loading } = useQuery(ALL_BOOKS_AND_GENRES)
+
+  useEffect(() => {
+    if (data) {
+      setFavoriteGenre(
+        data.allGenres[Math.floor(Math.random() * data.allGenres.length)]
+      )
+      setBooks(data.allBooks)
+    }
+  }, [data])
+
+  const { data: filteredData } = useQuery(FILTER_GENRE, {
+    variables: { genre: favoriteGenre },
+    skip: !favoriteGenre,
+  })
+
+  useEffect(() => {
+    if (filteredData) {
+      setBooks(filteredData.allBooks)
+    }
+  }, [filteredData])
 
   if (loading) return <div>Loading...</div>
-
-  const genres = distinctGenres(data.allBooks)
-  const favoriteGenre = genres[Math.floor(Math.random() * genres.length)]
-  const books = filterBooks(data.allBooks, favoriteGenre)
 
   return (
     <div>

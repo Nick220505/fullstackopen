@@ -133,6 +133,7 @@ const typeDefs = `
     ): [Book!]!
 
     allAuthors: [Author!]!
+    allGenres: [String!]!
 
     me: User
   }
@@ -170,9 +171,25 @@ const resolvers = {
       if (args.author) {
         return Book.find({ author: args.author }).populate('author')
       }
+      if (args.genre) {
+        return Book.find({ genres: args.genre }).populate('author')
+      }
       return Book.find({}).populate('author')
     },
     allAuthors: async () => Author.find({}),
+    allGenres: async () => {
+      const books = await Book.find({})
+      return books
+        .map((book) => book.genres)
+        .reduce((genres, currentGenres) => {
+          currentGenres.forEach((genre) => {
+            if (!genres.includes(genre)) {
+              genres.push(genre)
+            }
+          })
+          return genres
+        }, [])
+    },
     me: (_, __, context) => context.currentUser,
   },
   Author: {
