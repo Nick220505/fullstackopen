@@ -168,9 +168,9 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (_, args) => {
       if (args.author) {
-        return Book.find({ author: args.author })
+        return Book.find({ author: args.author }).populate('author')
       }
-      return await Book.find({})
+      return Book.find({}).populate('author')
     },
     allAuthors: async () => Author.find({}),
     me: (_, __, context) => context.currentUser,
