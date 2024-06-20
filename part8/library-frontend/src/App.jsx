@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { useApolloClient } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -8,6 +8,7 @@ import Recommendations from './components/Recommendations'
 import LoginForm from './components/LoginForm'
 
 const App = () => {
+  const navigate = useNavigate()
   const [token, setToken] = useState(null)
   const client = useApolloClient()
 
@@ -22,6 +23,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    navigate('/login')
   }
 
   return (
