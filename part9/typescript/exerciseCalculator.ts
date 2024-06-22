@@ -14,7 +14,7 @@ interface Exercises {
 
 interface ExercisesArguments {
   target: number;
-  exerciseHours: number[];
+  dailyExercises: number[];
 }
 
 const parseExercisesArguments = (args: string[]): ExercisesArguments => {
@@ -29,17 +29,17 @@ const parseExercisesArguments = (args: string[]): ExercisesArguments => {
 
   return {
     target: Number(args[2]),
-    exerciseHours: args.slice(3, args.length).map((arg) => Number(arg)),
+    dailyExercises: args.slice(3, args.length).map((arg) => Number(arg)),
   };
 };
 
-const calculateExercise = (
+export const calculateExercise = (
   target: number,
-  exerciseHours: number[]
+  dailyExercises: number[]
 ): Exercises => {
-  const periodLength = exerciseHours.length;
-  const totalHours = exerciseHours.reduce((total, hour) => total + hour, 0);
-  const trainingDays = exerciseHours.reduce((numberOfDays, day) => {
+  const periodLength = dailyExercises.length;
+  const totalHours = dailyExercises.reduce((total, hour) => total + hour, 0);
+  const trainingDays = dailyExercises.reduce((numberOfDays, day) => {
     if (day !== 0) {
       return numberOfDays + 1;
     }
@@ -47,7 +47,7 @@ const calculateExercise = (
   }, 0);
 
   // Count how many days no exercise was done
-  const noExerciseDays = exerciseHours.reduce((totalDays, hours) => {
+  const noExerciseDays = dailyExercises.reduce((totalDays, hours) => {
     if (hours === 0) {
       return totalDays + 1;
     }
@@ -88,8 +88,8 @@ const calculateExercise = (
 };
 
 try {
-  const { target, exerciseHours } = parseExercisesArguments(process.argv);
-  console.log(calculateExercise(target, exerciseHours));
+  const { target, dailyExercises } = parseExercisesArguments(process.argv);
+  console.log(calculateExercise(target, dailyExercises));
 } catch (error) {
   let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
