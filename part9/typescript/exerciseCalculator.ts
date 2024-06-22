@@ -1,3 +1,5 @@
+import { isNotNumber } from './utils';
+
 type Rating = 1 | 2 | 3;
 
 interface Exercises {
@@ -9,6 +11,27 @@ interface Exercises {
   target: number;
   average: number;
 }
+
+interface ExercisesArguments {
+  target: number;
+  exerciseHours: number[];
+}
+
+const parseExercisesArguments = (args: string[]): ExercisesArguments => {
+  if (args.length < 4) {
+    throw new Error('At least two number arguments required');
+  }
+  for (let i = 2; i < args.length; i++) {
+    if (isNotNumber(args[i])) {
+      throw new Error('all arguments must be numbers');
+    }
+  }
+
+  return {
+    target: Number(args[2]),
+    exerciseHours: args.slice(3, args.length).map((arg) => Number(arg)),
+  };
+};
 
 const calculateExercise = (
   target: number,
@@ -64,4 +87,13 @@ const calculateExercise = (
   };
 };
 
-console.log(calculateExercise(2, [3, 0, 2, 4.5, 0, 3, 1]));
+try {
+  const { target, exerciseHours } = parseExercisesArguments(process.argv);
+  console.log(calculateExercise(target, exerciseHours));
+} catch (error) {
+  let errorMessage = 'Something bad happened.';
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}

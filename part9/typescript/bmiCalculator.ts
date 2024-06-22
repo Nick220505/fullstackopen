@@ -1,3 +1,21 @@
+import { isNotNumber } from './utils';
+
+interface Arguments {
+  height: number;
+  weight: number;
+}
+
+const parseArguments = (args: string[]): Arguments => {
+  if (isNotNumber(args[2]) || isNotNumber(args[3])) {
+    throw new Error('arguments must be numbers');
+  }
+
+  return {
+    height: Number(args[2]),
+    weight: Number(args[3]),
+  };
+};
+
 const calculateBmi = (height: number, weight: number): string => {
   const heightInMeters = height / 100;
   const bmi = weight / Math.pow(heightInMeters, 2);
@@ -14,4 +32,13 @@ const calculateBmi = (height: number, weight: number): string => {
   return `${result} (${bmi})`;
 };
 
-console.log(calculateBmi(180, 74));
+try {
+  const { height, weight } = parseArguments(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened.';
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
