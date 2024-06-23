@@ -22,13 +22,13 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   );
 };
 
-const addEntry = (object: NewPatientEntry): PatientEntry => {
-  const newPatient: PatientEntry = {
+const addEntry = (entry: NewPatientEntry): PatientEntry => {
+  const newPatientEntry: PatientEntry = {
     id: uuid(),
-    ...object,
+    ...entry,
   };
-  patientEntries.push(newPatient);
-  return newPatient;
+  patientEntries.push(newPatientEntry);
+  return newPatientEntry;
 };
 
 export default { getEntries, getNonSensitiveEntries, addEntry };

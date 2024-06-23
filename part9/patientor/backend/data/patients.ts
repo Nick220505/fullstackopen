@@ -1,6 +1,7 @@
 import { PatientEntry } from '../src/types';
+import { parseGender } from '../src/utils';
 
-const patientEntries: PatientEntry[] = [
+const data = [
   {
     id: 'd2773336-f723-11e9-8f0b-362b9e155667',
     name: 'John McClane',
@@ -42,5 +43,10 @@ const patientEntries: PatientEntry[] = [
     occupation: 'Digital evangelist',
   },
 ];
+
+const patientEntries: PatientEntry[] = data.map((obj) => ({
+  ...obj,
+  gender: parseGender(obj.gender),
+}));
 
 export default patientEntries;
