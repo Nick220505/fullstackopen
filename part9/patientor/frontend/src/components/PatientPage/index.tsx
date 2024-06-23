@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
 import { Patient, Gender } from "../../types";
 import { AxiosError } from "axios";
+import Typography from "@mui/material/Typography";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
+import PatientEntryList from "./PatientEntryList";
 
 const PatientPage = () => {
   const { id } = useParams();
@@ -38,9 +40,15 @@ const PatientPage = () => {
     <div>
       {patient && (
         <div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <h2>{patient.name}</h2>
-            <div style={{ margin: 10 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "1em",
+            }}
+          >
+            <Typography variant="h4">{patient.name}</Typography>
+            <div style={{ marginLeft: 10 }}>
               {patient.gender === Gender.Male ? (
                 <MaleIcon />
               ) : patient.gender === Gender.Female ? (
@@ -53,6 +61,7 @@ const PatientPage = () => {
           <p>Ssn: {patient.ssn}</p>
           <p>Occupation: {patient.occupation}</p>
           <p>Date of Birth: {patient.dateOfBirth}</p>
+          <PatientEntryList entries={patient.entries} />
         </div>
       )}
     </div>
