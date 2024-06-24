@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import diagnosisService from "../../services/diagnoses";
-import { Entry, Diagnosis } from "../../types";
+import { Entry, Diagnosis, HealthCheckRating } from "../../types";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import WorkIcon from "@mui/icons-material/Work";
 
 const PatientEntryList = ({ entries }: { entries: Entry[] }) => {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
@@ -13,14 +17,29 @@ const PatientEntryList = ({ entries }: { entries: Entry[] }) => {
     fetchDiagnoses();
   }, []);
 
-  console.log(diagnoses);
-
   return (
     <div>
-      <h3>Entries</h3>
+      {entries.length !== 0 ? <h3>Entries</h3> : <h3>No entries were found</h3>}
       {entries.map((entry: Entry) => (
-        <div key={entry.id}>
-          <span>{entry.date} </span>
+        <div
+          key={entry.id}
+          style={{
+            border: "2px solid black",
+            borderRadius: "5px",
+            padding: 10,
+            marginBottom: 10,
+          }}
+        >
+          <div>
+            {entry.date}{" "}
+            {entry.type === "HealthCheck" ? (
+              <MedicalServicesIcon />
+            ) : entry.type === "Hospital" ? (
+              <LocalHospitalIcon />
+            ) : (
+              <WorkIcon />
+            )}
+          </div>
           <i>{entry.description}</i>
           {entry.diagnosisCodes && diagnoses && (
             <ul>
@@ -31,6 +50,47 @@ const PatientEntryList = ({ entries }: { entries: Entry[] }) => {
               ))}
             </ul>
           )}
+          {entry.type === "Hospital" ? (
+            <div>
+              <strong>Discharge:</strong>
+              <div>date: {entry.discharge.date}</div>
+              <div>criteria: {entry.discharge.criteria}</div>
+            </div>
+          ) : entry.type === "OccupationalHealthcare" ? (
+            <div>
+              <strong>Employer name:</strong> {entry.employerName}
+              {entry.sickLeave && (
+                <div>
+                  <strong>Sick leave:</strong>
+                  <div>start date: {entry.sickLeave.startDate}</div>
+                  <div>end date: {entry.sickLeave.endDate}</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <strong>Health check rating: </strong>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {entry.healthCheckRating === HealthCheckRating.Healthy ? (
+                  <>
+                    <span>Healthy</span>
+                    <FavoriteIcon sx={{ color: "green" }} />
+                  </>
+                ) : entry.healthCheckRating === HealthCheckRating.LowRisk ? (
+                  <>
+                    <span>Low risk</span>
+                    <FavoriteIcon sx={{ color: "yellow" }} />
+                  </>
+                ) : (
+                  <>
+                    <span>Critical risk</span>
+                    <FavoriteIcon sx={{ color: "red" }} />
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+          <div>diagnose by {entry.specialist}</div>
         </div>
       ))}
     </div>
