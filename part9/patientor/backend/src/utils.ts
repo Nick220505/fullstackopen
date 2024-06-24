@@ -110,24 +110,24 @@ const parseType = (
 };
 
 const parseDescription = (description: unknown): string => {
-  if (!isString(description)) {
+  if (!description || !isString(description)) {
     throw new Error("Incorrect or missing description");
   }
   return description;
 };
 
 const parseSpecialist = (specialist: unknown): string => {
-  if (!isString(specialist)) {
+  if (!specialist || !isString(specialist)) {
     throw new Error("Incorrect or missing specialist");
   }
   return specialist;
 };
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis["code"]> => {
-  if (!object || typeof object !== "object" || !("diagnosisCodes" in object)) {
+  if (!object || typeof object !== "object") {
     return [] as Array<Diagnosis["code"]>;
   }
-  return object.diagnosisCodes as Array<Diagnosis["code"]>;
+  return object as Array<Diagnosis["code"]>;
 };
 
 const isDischarge = (param: unknown): param is Discharge => {
@@ -137,6 +137,8 @@ const isDischarge = (param: unknown): param is Discharge => {
 const parseDischarge = (discharge: unknown): Discharge => {
   if (
     !isDischarge(discharge) ||
+    !discharge.date ||
+    !discharge.criteria ||
     !isString(discharge.date) ||
     !isString(discharge.criteria)
   ) {
@@ -146,7 +148,7 @@ const parseDischarge = (discharge: unknown): Discharge => {
 };
 
 const parseEmployerName = (employerName: unknown): string => {
-  if (!isString(employerName)) {
+  if (!employerName || !isString(employerName)) {
     throw new Error("Incorrect or missing employerName");
   }
   return employerName;
@@ -178,15 +180,18 @@ export const toNewEntry = (object: unknown): NewEntry => {
     "date" in object &&
     "specialist" in object
   ) {
-    const baseEntry: NewBaseEntry = {
+    let baseEntry: NewBaseEntry = {
       description: parseDescription(object.description),
       date: parseDate(object.date),
       specialist: parseSpecialist(object.specialist),
-      diagnosisCodes:
-        "diagnosisCodes" in object
-          ? parseDiagnosisCodes(object.diagnosisCodes)
-          : [],
     };
+
+    if ("diagnosisCodes" in object) {
+      baseEntry = {
+        ...baseEntry,
+        diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+      };
+    }
 
     const entryType = parseType(object.type);
 

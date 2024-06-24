@@ -81,6 +81,11 @@ const PatientEntryList = ({ entries }: { entries: Entry[] }) => {
                     <span>Low risk</span>
                     <FavoriteIcon sx={{ color: "yellow" }} />
                   </>
+                ) : entry.healthCheckRating === HealthCheckRating.HighRisk ? (
+                  <>
+                    <span>High risk</span>
+                    <FavoriteIcon sx={{ color: "orange" }} />
+                  </>
                 ) : (
                   <>
                     <span>Critical risk</span>

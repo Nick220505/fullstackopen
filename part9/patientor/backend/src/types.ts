@@ -36,6 +36,7 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
 export enum HealthCheckRating {
   "Healthy" = 0,
   "LowRisk" = 1,
+  "HighRisk" = 2,
   "CriticalRisk" = 3,
 }
 
@@ -75,9 +76,4 @@ type UnionOmit<T, K extends string | number | symbol> = T extends unknown
 
 export type NewBaseEntry = Omit<BaseEntry, "id">;
 export type NewEntry = UnionOmit<Entry, "id">;
-export type NewHospitalEntry = UnionOmit<HospitalEntry, "id">;
-export type NewOccupationalHealthcareEntry = UnionOmit<
-  OccupationalHealthcareEntry,
-  "id"
->;
 export type NewHealthCheckEntry = UnionOmit<HealthCheckEntry, "id">;
