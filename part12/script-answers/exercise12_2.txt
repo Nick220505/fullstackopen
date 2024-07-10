@@ -1,0 +1,30 @@
+Script started on 2024-07-08 12:27:59-05:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="189" LINES="18"]
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+[?2004h]0;nico@LEGION: /mnt/c/Users/Nico/Documents/GitHub/containers-applications[01;32mnico@LEGION[00m:[01;34m/mnt/c/Users/Nico/Documents/GitHub/containers-applications[00m$ docker run -it ubuntu bash
+[?2004lUnable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+
+[1A[2K9c704ecd0c69: Pulling fs layer [1B[1A[2K9c704ecd0c69: Downloading [>                                                  ]  302.3kB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=>                                                 ]  924.9kB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===>                                               ]  1.859MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=====>                                             ]  3.104MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=======>                                           ]  4.619MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=========>                                         ]  5.552MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===========>                                       ]  6.777MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [============>                                      ]  7.703MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===============>                                   ]  9.235MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===================>                               ]   11.7MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=====================>                             ]  12.95MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [========================>                          ]   14.5MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===========================>                       ]  16.05MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=============================>                     ]   17.6MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [================================>                  ]  19.13MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [==================================>                ]  20.69MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [====================================>              ]  21.61MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [========================================>          ]  23.78MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [===========================================>       ]  25.64MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [==============================================>    ]  27.81MB/29.71MB[1B[1A[2K9c704ecd0c69: Downloading [=================================================> ]  29.67MB/29.71MB[1B[1A[2K9c704ecd0c69: Verifying Checksum [1B[1A[2K9c704ecd0c69: Download complete [1B[1A[2K9c704ecd0c69: Extracting [>                                                  ]  327.7kB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [=========>                                         ]  5.571MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [==============>                                    ]   8.52MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [====================>                              ]  12.12MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [=================================>                 ]  19.66MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [=========================================>         ]   24.9MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [===========================================>       ]  25.56MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [==============================================>    ]  27.85MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [=================================================> ]  29.16MB/29.71MB[1B[1A[2K9c704ecd0c69: Extracting [==================================================>]  29.71MB/29.71MB[1B[1A[2K9c704ecd0c69: Pull complete [1BDigest: sha256:2e863c44b718727c860746568e1d54afd13b2fa71b160f5cd9058fc436217b30
+Status: Downloaded newer image for ubuntu:latest
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# ls
+[?2004l[0m[01;36mbin[0m  [01;34mboot[0m  [01;34mdev[0m  [01;34metc[0m  [01;34mhome[0m  [01;36mlib[0m  [01;36mlib64[0m  [01;34mmedia[0m  [01;34mmnt[0m  [01;34mopt[0m  [01;34mproc[0m  [01;34mroot[0m  [01;34mrun[0m  [01;36msbin[0m  [01;34msrv[0m  [01;34msys[0m  [30;42mtmp[0m  [01;34musr[0m  [01;34mvar[0m
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# mkdir usr/src/app
+[?2004l[?2004h]0;root@af21133c7206: /root@af21133c7206:/# ls
+[?2004l[0m[01;36mbin[0m  [01;34mboot[0m  [01;34mdev[0m  [01;34metc[0m  [01;34mhome[0m  [01;36mlib[0m  [01;36mlib64[0m  [01;34mmedia[0m  [01;34mmnt[0m  [01;34mopt[0m  [01;34mproc[0m  [01;34mroot[0m  [01;34mrun[0m  [01;36msbin[0m  [01;34msrv[0m  [01;34msys[0m  [30;42mtmp[0m  [01;34musr[0m  [01;34mvar[0m
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# ls usr
+[?2004l[0m[01;34mbin[0m  [01;34mgames[0m  [01;34minclude[0m  [01;34mlib[0m  [01;34mlib64[0m  [01;34mlibexec[0m  [01;34mlocal[0m  [01;34msbin[0m  [01;34mshare[0m  [01;34msrc[0m
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# ls sr  usr/src
+[?2004l[0m[01;34mapp[0m
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# touch /usr/src/app/index.js
+[?2004l[?2004h]0;root@af21133c7206: /root@af21133c7206:/# [Kls /usr/src/app/index.js
+[?2004l/usr/src/app/index.js
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# ls /usr/src/app/index.js        
+[?2004lindex.js
+[?2004h]0;root@af21133c7206: /root@af21133c7206:/# exit
+[?2004lexit
+[?2004h]0;nico@LEGION: /mnt/c/Users/Nico/Documents/GitHub/containers-applications[01;32mnico@LEGION[00m:[01;34m/mnt/c/Users/Nico/Documents/GitHub/containers-applications[00m$ exit
+[?2004lexit
+
+Script done on 2024-07-08 12:30:06-05:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,27 @@
+services:
+  web:
+    depends_on:
+      - api
+    image: bloglist-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+  api:
+    image: bloglist-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      MONGODB_URI: mongodb+srv://Nick220505:jS1W8dVaxlJQtcSQ@cluster0.fseupdu.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Cluster0
+      TEST_MONGODB_URI: mongodb+srv://Nick220505:jS1W8dVaxlJQtcSQ@cluster0.fseupdu.mongodb.net/testBloglist?retryWrites=true&w=majority&appName=Cluster0
+      SECRET: xyz
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - web
+      - api

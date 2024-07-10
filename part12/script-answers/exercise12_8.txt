@@ -1,0 +1,77 @@
+Script started on 2024-07-08 18:21:40-05:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="189" LINES="18"]
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+[?2004h]0;nico@LEGION: /mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[01;32mnico@LEGION[00m:[01;34m/mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[00m$ docker p[s[K[Ks
+[?2004lCONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS                     NAMES
+234bf88218f2   mongo           "docker-entrypoint.s…"   12 minutes ago   Up 12 minutes   0.0.0.0:3456->27017/tcp   todo-backend-mongo-1
+23e3fd31cbd1   hello-exec      "/docker-entrypoint.…"   16 minutes ago   Up 16 minutes   0.0.0.0:8080->80/tcp      gifted_goldstine
+a68536a1449a   postgres:15.3   "docker-entrypoint.s…"   7 weeks ago      Up 26 minutes   0.0.0.0:5434->5432/tcp    my-database
+[?2004h]0;nico@LEGION: /mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[01;32mnico@LEGION[00m:[01;34m/mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[00m$ docker exec -it todo-backend-mongo-1 bash
+[?2004l[?2004hroot@234bf88218f2:/# mongosh -u root -p example
+[?2004l]0;mongosh mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000Current Mongosh Log ID:	668c74a788d627181a149f47
+Connecting to:		[1m[32mmongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.10[0m
+Using MongoDB:		7.0.12
+[1m[33mUsing Mongosh[0m:		2.2.10
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+[1G[0J [1G[1m[33m------[0m
+   [1m[33mThe server generated these startup warnings when booting[0m
+   2024-07-08T23:09:24.064+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-07-08T23:09:24.989+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never' in this binary version
+   2024-07-08T23:09:24.989+00:00: vm.max_map_count is too low
+[1m[33m------[0m
+
+[1G[0Jtest> [7Gshow dbs
+[1madmin[0m         100.00 KiB
+[1mconfig[0m         12.00 KiB
+[1mlocal[0m          72.00 KiB
+[1mthe_database[0m   40.00 KiB
+[1G[0Jtest> [7Guse the_database
+switched to db the_database
+[1G[0Jthe_database> [15Gshow collections
+[1mtodos[0m
+[1G[0Jthe_database> [15Gdb.todos.find()[1D[1G[0Jthe_database> db.todos.find[44m([49m)[29G[1G[0Jthe_database> db.todos.find[44m([49m{)[30G[1G[0Jthe_database> db.todos.find[44m([49m{})[31G[1C[1G[0Jthe_database> db.todos.find({})[32G
+[
+  {
+    _id: ObjectId([32m'668c71a2ed68e40f5f149f48'[39m),
+    text: [32m'Write code'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'668c71a3ed68e40f5f149f49'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gdb.todos.insertOne()[1D[1G[0Jthe_database> db.todos.insertOne[44m([49m)[34G[1G[0Jthe_database> db.todos.insertOne[44m([49m{)[35G[1G[0Jthe_database> db.todos.insertOne[44m([49m{})[36G[1D[1G[0Jthe_database> db.todos.insertOne([44m{[49m})[35G[1G[0Jthe_database> db.todos.insertOne([44m{[49m })[36G[1G[0Jthe_database> db.todos.insertOne([44m{[49m  })[37G[1D[1G[0Jthe_database> db.todos.insertOne({  })[36G[1G[0Jthe_database> db.todos.insertOne({ t })[37G[1G[0Jthe_database> db.todos.insertOne({ te })[38G[1G[0Jthe_database> db.todos.insertOne({ tex })[39G[1G[0Jthe_database> db.todos.insertOne({ text })[40G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: })[41G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m:  })[42G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m' })[39m[43G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m''[39m })[44G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m' })[39m[43G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m:  })[42G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m" })[39m[43G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m""[39m })[44G[1D[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49m"[39m })[43G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mG"[39m })[44G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo"[39m })[45G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo "[39m })[46G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo t"[39m })[47G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to"[39m })[48G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to "[39m })[49G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to t"[39m })[50G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to th"[39m })[51G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to the"[39m })[52G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to the "[39m })[53G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to the G"[39m })[54G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to the GY"[39m })[55G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [44m[32m"[49mGo to the GYM"[39m })[56G[1C[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m })[57G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, })[58G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m,  })[59G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, d })[60G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [36mdo[39m })[61G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, don })[62G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, done })[63G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: })[64G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m:  })[65G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: f })[66G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: fa })[67G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: fal })[68G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: fals })[69G[1G[0Jthe_database> db.todos.insertOne({ [33mtext[39m: [32m"Go to the GYM"[39m, [33mdone[39m: [33mfalse[39m })[70G[3C
+{
+  acknowledged: [33mtrue[39m,
+  insertedId: ObjectId([32m'668c75b688d627181a149f48'[39m)
+}
+[1G[0Jthe_database> [15Gdb.todos.find()[1D[1G[0Jthe_database> db.todos.find[44m([49m)[29G[1G[0Jthe_database> db.todos.find[44m([49m{)[30G[1G[0Jthe_database> db.todos.find[44m([49m{})[31G[1C[1G[0Jthe_database> db.todos.find({})[32G
+[
+  {
+    _id: ObjectId([32m'668c71a2ed68e40f5f149f48'[39m),
+    text: [32m'Write code'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'668c71a3ed68e40f5f149f49'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  },
+  {
+    _id: ObjectId([32m'668c75b688d627181a149f48'[39m),
+    text: [32m'Go to the GYM'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gexit
+[?2004hroot@234bf88218f2:/# exit
+[?2004lexit
+[?2004h]0;nico@LEGION: /mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[01;32mnico@LEGION[00m:[01;34m/mnt/c/Users/Nico/Documents/GitHub/containers-applications/script-answers[00m$ exit
+[?2004lexit
+
+Script done on 2024-07-08 18:27:21-05:00 [COMMAND_EXIT_CODE="0"]

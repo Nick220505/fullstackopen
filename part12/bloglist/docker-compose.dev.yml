@@ -1,0 +1,49 @@
+services:
+  web:
+    depends_on:
+      - api
+    image: bloglist-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: rebuild
+          path: ./frontend/package-lock.json
+        - action: sync
+          path: ./frontend
+          target: /usr/src/app
+          ignore:
+            - ./frontend/node_modules/
+  api:
+    image: bloglist-backend-dev
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    environment:
+      MONGODB_URI: mongodb+srv://Nick220505:jS1W8dVaxlJQtcSQ@cluster0.fseupdu.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Cluster0
+      TEST_MONGODB_URI: mongodb+srv://Nick220505:jS1W8dVaxlJQtcSQ@cluster0.fseupdu.mongodb.net/testBloglist?retryWrites=true&w=majority&appName=Cluster0
+      SECRET: xyz
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/package.json
+        - action: rebuild
+          path: ./backend/package-lock.json
+        - action: sync
+          path: ./backend
+          target: /usr/src/app
+          ignore:
+            - ./backend/node_modules/
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - web
+      - api
