@@ -1,0 +1,97 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  simple-deployment-pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run eslint
+      - name: test
+        run: npm run test
+      - name: build
+        run: npm run build
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run playwright tests
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Deploy
+        if: ${{ (github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ' '), '#skip')) }}
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "${deploy_url}"
+      - uses: actions/checkout@v4
+      - name: A new version of Pokedex deployed
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          text: A new version of Pokedex has been deployed
+          description: Deployed at https://full-stack-open-pokedex-db8u.onrender.com by ${{ github.actor }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Build failed
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          text: Build failed
+          description: commit https://github.com/${{ github.repository }}/commit/${{ github.sha }}" by ${{ github.actor }} broke the build :(
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  tag_release:
+    needs: [simple-deployment-pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@8c8163ef62cf9c4677c8e800f36270af27930f42
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  a_test_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo $GITHUB_CONTEXT
+      - name: commits
+        env:
+          COMMITS: ${{ toJson(github.event.commits) }}
+        run: echo $COMMITS
+      - name: commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo $COMMIT_MESSAGES
+      - name: commit messages joined
+        env:
+          COMMIT_MESSAGES_JOINED: ${{ toJson(join(github.event.commits.*.message, ' ')) }}
+        run: echo $COMMIT_MESSAGES_JOINED
+      - name: check for skip
+        env:
+          SKIP: ${{ toJson((github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ' '), '#skip'))) }}
+        run: echo $SKIP
+      - name: check for all conditions
+        env:
+          CONDITION1: ${{ toJson(github.event_name == 'push') }}
+          CONDITION2: ${{ toJson(!contains(join(github.event.commits.*.message, ' '), '#skip')) }}
+        run: echo $CONDITION1 $CONDITION2

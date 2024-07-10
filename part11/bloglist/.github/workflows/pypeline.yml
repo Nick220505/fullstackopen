@@ -1,0 +1,102 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  backend_checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+      - name: Create env file
+        run: |
+          echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" > .env
+          echo "SECRET=${{ secrets.SECRET }}" >> .env
+      - name: Run tests
+        run: npm test
+
+  frontend_checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+      - name: Run tests
+        run: npm test
+
+  integration_tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./e2e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Create env file
+        run: |
+          echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" > ../backend/.env
+          echo "SECRET=${{ secrets.SECRET }}" >> ../backend/.env
+          echo "PORT=${{ secrets.PORT }}" >> ../backend/.env
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run playwright tests
+        run: npm test
+
+  deployment_pipeline:
+    needs: [backend_checks, frontend_checks, integration_tests]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install
+      - name: Build UI
+        run: npm run build-ui
+      - name: Deploy
+        if: ${{ (github.event_name == 'push') && (!contains(join(github.event.commits.*.message, ' '), '#skip')) }}
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "${deploy_url}"
+
+  tag_release:
+    needs: [deployment_pipeline]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@8c8163ef62cf9c4677c8e800f36270af27930f42
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

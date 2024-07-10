@@ -1,0 +1,16 @@
+name: Url health check
+
+on:
+  schedule:
+    - cron: '30 15 * * *'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check the deployes service URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: 'https://full-stack-open-pokedex-db8u.onrender.com'
+          max_attemts: 3
+          retry_delay: 5s
