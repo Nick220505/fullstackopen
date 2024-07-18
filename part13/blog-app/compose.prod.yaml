@@ -1,0 +1,36 @@
+name: blog-app-prod
+services:
+  api:
+    image: api
+    build:
+      context: ./backend
+      dockerfile: prod.Dockerfile
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://prod_user:prod_password@db:5432/prod_database
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: prod_user
+      POSTGRES_PASSWORD: prod_password
+      POSTGRES_DB: prod_database
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'prod_user', '-d', 'prod_database']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80
+    depends_on:
+      - api
+volumes:
+  db-data:

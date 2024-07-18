@@ -1,0 +1,32 @@
+# docker compose -f compose.test.yaml up --build --abort-on-container-exit
+name: blog-app-test
+services:
+  api:
+    image: api-test
+    build:
+      context: ./backend
+      dockerfile: test.Dockerfile
+    environment:
+      NODE_ENV: test
+      JWT_SECRET: secret
+      SESSION_SECRET: secret
+      DATABASE_URL: postgres://test_user:test_password@db:5432/test_database
+    volumes:
+      - ./backend/src:/usr/src/app/src
+      - /usr/src/app/node_modules
+    container_name: blog-app-test-api
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_database
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'test_user', '-d', 'test_database']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    container_name: blog-app-test-db

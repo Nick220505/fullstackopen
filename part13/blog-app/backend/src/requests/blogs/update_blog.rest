@@ -1,0 +1,7 @@
+PUT http://localhost:8080/api/blogs/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJIYXJyeTEyMyIsImlhdCI6MTcyMTAxMzQ1MH0.EefMh7Xi4aR3NrjBRJU9RW8ePPJhhIIrp35YcKIZIrY
+Content-Type: application/json
+
+{
+  "likes": 5
+}
