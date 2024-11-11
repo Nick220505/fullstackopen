@@ -24,6 +24,7 @@
     "@types/uuid": "^10.0.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "patientor-backend": "file:",
     "uuid": "^10.0.0"
   }
 }

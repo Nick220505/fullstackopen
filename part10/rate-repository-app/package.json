@@ -37,6 +37,7 @@
     "expo-status-bar": "~1.11.1",
     "formik": "^2.4.6",
     "graphql": "^15.8.0",
+    "rate-repository-app": "file:",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",

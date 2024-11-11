@@ -13,6 +13,7 @@
     "@apollo/client": "^3.10.5",
     "graphql": "^16.8.2",
     "graphql-ws": "^5.16.0",
+    "library-frontend": "file:",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
