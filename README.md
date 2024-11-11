@@ -135,10 +135,4 @@ The repository is organized by course parts, with each directory containing the 
 └── part13/ # Relational Databases
 ```
 
-## 📫 Contact
-
-Feel free to reach out if you have any questions about the course or projects!
-
-[Your contact information]
-
 #webdevelopment #fullstack #javascript #react #nodejs #typescript #docker #graphql #postgresql #mongodb #cicd #github #programming
