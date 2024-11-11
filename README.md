@@ -1,8 +1,15 @@
 # Full Stack Open 2024 - Course Completion 🎓
 
+<table>
+<tr>
+<td width="40%">
 <img src="./course.svg" alt="Full Stack Open Banner" width="100%" />
-
+</td>
+<td>
 This repository contains my completed coursework for the Full Stack Open 2024 program from the University of Helsinki. Learn React, Redux, Node.js, MongoDB, GraphQL, and TypeScript all at once! The course introduces modern JavaScript-based web development, focusing on building single-page applications with ReactJS that use REST APIs built with Node.js.
+</td>
+</tr>
+</table>
 
 ## 📚 Course Parts Completed
 
