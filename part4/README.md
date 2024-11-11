@@ -1,6 +1,6 @@
 # Part 4 - Testing Express Servers, User Administration
 
-This directory contains the backend implementation for the blog list application.
+This directory contains the full-stack implementation for the blog list application.
 
 ## Main Features
 
@@ -14,26 +14,40 @@ This directory contains the backend implementation for the blog list application
 ## Project Structure
 ```
 bloglist/
-├── backend/                # Backend source code
-│   ├── controllers/        # Route handlers
-│   │   ├── blogs.js       # Blog operations
-│   │   ├── login.js       # Authentication
-│   │   └── users.js       # User management
-│   ├── models/            # Database models
-│   │   ├── blog.js        # Blog schema
-│   │   └── user.js        # User schema
-│   ├── tests/             # Test files
+├── backend/
+│   ├── controllers/
+│   │   ├── blogs.js
+│   │   ├── login.js
+│   │   └── users.js
+│   ├── models/
+│   │   ├── blog.js
+│   │   └── user.js
+│   ├── tests/
 │   │   ├── blog_api.test.js
 │   │   ├── test_helper.js
 │   │   └── user_api.test.js
-│   ├── utils/             # Helper functions
-│   │   ├── config.js      # Environment configuration
-│   │   ├── logger.js      # Logging
-│   │   ├── middleware.js  # Custom middleware
-│   │   └── list_helper.js # Test helpers
-│   ├── app.js            # Express app setup
-│   └── index.js          # Server entry point
-└── requests/             # API test requests
+│   ├── utils/
+│   │   ├── config.js
+│   │   ├── logger.js
+│   │   ├── middleware.js
+│   │   └── list_helper.js
+│   ├── app.js
+│   └── index.js
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Blog.jsx
+│   │   │   ├── BlogForm.jsx
+│   │   │   ├── LoginForm.jsx
+│   │   │   └── Notification.jsx
+│   │   ├── services/
+│   │   │   ├── blogs.js
+│   │   │   ├── login.js
+│   │   │   └── users.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── tests/
+└── requests/
     ├── create_blog.rest
     ├── create_user.rest
     └── login.rest
@@ -71,3 +85,5 @@ bloglist/
 - API testing with Supertest
 - Test environment configuration
 - Test database handling
+- Integration testing
+- Component testing
